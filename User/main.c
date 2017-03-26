@@ -377,8 +377,8 @@ void GCS_GetCommand(unsigned char PC_comm)//xiang：注意：这个函数是针�
 		    break; //减油门
 
 		case 0x81:		    Camera_Routine();		    break;   //发摄像头采集图像
-		case 0xc8:		    Quadrotor_Mode = Quad_Take_Of;		    break;
-		case 0xc9:		    Quadrotor_Mode = Quad_Landing;		    break;
+		case 0xd1:		    Quadrotor_Mode = Quad_Take_Of;		    break;
+		case 0xd2:		    Quadrotor_Mode = Quad_Landing;		    break;
 	}
 }
 #endif
