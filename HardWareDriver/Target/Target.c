@@ -13,6 +13,7 @@ PWM输入定义：
 #include "Target.h"
 #include "IMU.h"
 #include "Quadrotor.h"
+#include "PWM_Input.h"
 
 int16_t PWM_Offset_Roll,PWM_Offset_Pitch,PWM_Offset_Yaw;
 float Target_Roll,Target_Pitch,Target_Yaw;//Target_Roll,Target_Pitch单位为 x/10=度
@@ -23,7 +24,8 @@ volatile float Quad_THR = MINTHROTTLE;
 //上位机控制四轴目标角度相关变量
 int16_t GCSControl_CH1 = 0;//中立值为0
 int16_t GCSControl_CH2 = 0;
-int16_t GCSControl_CH3 = 0;//起始值为0
+float GCSControl_CH3 = 0;//起始值为0
+float GCSControl_CH3_Accumulate = 0;
 int16_t GCSControl_CH4 = 0;
 #endif
 
@@ -50,6 +52,11 @@ void Get_Throttle(void)
 	    Quad_THR = MINTHROTTLE;
 	}
 	#if Yingzhang_GCS
+	GCSControl_CH3 += GCSControl_CH3_Accumulate;
+	if (GCSControl_CH3 + Quad_THR > MAXTHROTTLE)
+	    GCSControl_CH3 = MAXTHROTTLE - Quad_THR;
+	if (GCSControl_CH3 + Quad_THR < MINTHROTTLE)
+	    GCSControl_CH3 = MINTHROTTLE - Quad_THR;
 	Quad_THR += GCSControl_CH3;
 	#endif
 }

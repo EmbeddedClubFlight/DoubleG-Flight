@@ -363,18 +363,11 @@ void GCS_GetCommand(unsigned char PC_comm)//xiang：注意：这个函数是针�
 		case 0xc7:
 		    GCSControl_CH1 = 0;
 		    GCSControl_CH2 = 0;
+		    GCSControl_CH3_Accumulate = 0;
 		    GCSControl_CH4 = 0;
 		    break;
-		case 0xc8:
-		    GCSControl_CH3 += 30;
-		    if (GCSControl_CH3 > MAXTHROTTLE - MINTHROTTLE)
-			GCSControl_CH3 = MAXTHROTTLE - MINTHROTTLE;
-		    break; //加油门
-		case 0xc9:
-		    GCSControl_CH3 -= 30;
-		    if (GCSControl_CH3 < MINTHROTTLE - MAXTHROTTLE)
-			GCSControl_CH3 = MINTHROTTLE - MAXTHROTTLE;
-		    break; //减油门
+		case 0xc8:		    GCSControl_CH3_Accumulate = 0.1;		    break; //加油门
+		case 0xc9:		    GCSControl_CH3_Accumulate = -0.1;		    break; //减油门
 
 		case 0x81:		    Camera_Routine();		    break;   //发摄像头采集图像
 		case 0xd1:		    Quadrotor_Mode = Quad_Take_Of;		    break;
